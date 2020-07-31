@@ -5,3 +5,4 @@ web_server_address_space = "1.0.0.0/22"
 web_server_address_prefix = "1.0.1.0/24"
 web_server_name = "web-01"
 environment = "development"
+web_server_count = 2

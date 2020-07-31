@@ -23,15 +23,16 @@ resource "azurerm_subnet" "web_server_subnet" {
 }
 
 resource "azurerm_network_interface" "web_server_nic"{
-    name = "${var.resource_prefix}-nic"
+    name = "${var.web_server_name}-${format("%02d",count.index)}-nic"
     location = var.web_server_location
     resource_group_name = azurerm_resource_group.web_server_rg.name
+    count = var.web_server_count
 
     ip_configuration {
         name = "${var.resource_prefix}-ip"
         subnet_id = azurerm_subnet.web_server_subnet.id
         private_ip_address_allocation = "dynamic"
-        public_ip_address_id = azurerm_public_ip.web_server_ip.id
+        public_ip_address_id = count.index == 0 ? azurerm_public_ip.web_server_ip.id: null   
     }
 }
 
@@ -98,3 +99,5 @@ resource "azurerm_availability_set" "web_server_availability" {
         managed = true
         platform_fault_domain_count = 2
 }
+
+
